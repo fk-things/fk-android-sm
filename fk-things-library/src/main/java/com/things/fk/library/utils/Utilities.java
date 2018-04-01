@@ -18,6 +18,7 @@ package com.things.fk.library.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Application;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -74,7 +75,36 @@ public final class Utilities {
 
     public static final boolean ATLEAST_JB_MR1 =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    /***
+     * global context
+     */
+    private static Application application;
 
+    public static Application getContext() {
+        if (application == null) {
+            Application app = null;
+            try {
+                app = (Application) Class.forName("android.app.AppGlobals")
+                        .getMethod("getInitialApplication")
+                        .invoke(null);
+                if (app == null) {
+                    throw new IllegalStateException("Static initialization of Applications must be on main thread.");
+                }
+            } catch (final Exception e) {
+                Log.e(TAG, "Failed to get current application from AppGlobals." + e.getMessage());
+                try {
+                    app = (Application) Class.forName("android.app.ActivityThread")
+                            .getMethod("currentApplication")
+                            .invoke(null);
+                } catch (final Exception ex) {
+                    Log.e(TAG, "Failed to get current application from ActivityThread." + e.getMessage());
+                }
+            } finally {
+                application = app;
+            }
+        }
+        return application;
+    }
 
     /**
      * 启动activity
@@ -302,5 +332,11 @@ public final class Utilities {
         }
         return true;
     }
+
+
+    public static void strictMode() {
+
+    }
+
 
 }
