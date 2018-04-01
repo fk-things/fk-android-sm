@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Sm-android-things</string>
+    <string name="str_login">登录</string>
+    <string name="str_tittle_page_main">鬼夜寒空</string>
+
+    <string name="hint_user_name">请输入用户名</string>
+    <string name="hint_password">请输入密码</string>
 </resources>

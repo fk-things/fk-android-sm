@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">fk-things-library</string>
+
+    <string name="activity_not_found" msgid="8071924732094499514">"未安装该应用。"</string>
+    
+    
+    <string name="str_menu_1">管理员列表</string>
+    <string name="str_menu_2">角色管理</string>
+    <string name="str_menu_3">菜单管理</string>
+    <string name="str_menu_4">SQL监控</string>
+    <string name="str_menu_5">定时任务</string>
+    <string name="str_menu_6">参数管理</string>
+    <string name="str_menu_7">文件上传</string>
+    <string name="str_menu_8">系统日志</string>
+    <string name="str_menu_9">产品管理</string>
+</resources>

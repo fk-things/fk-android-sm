@@ -1,28 +1,87 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
+
+    compileSdkVersion app.compileSdkVersion
+    buildToolsVersion app.buildToolsVersion
+
     defaultConfig {
         applicationId "com.things.fk.sm"
-        minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion app.minSdkVersion
+        targetSdkVersion app.targetSdkVersion
+        versionCode Integer.parseInt(app.versionCode)
+        versionName app.versionName
     }
-    buildTypes {
+
+    aaptOptions {
+        cruncherEnabled = false
+        useNewCruncher = false
+    }
+
+    Properties keys = new Properties()
+    keys.load(rootProject.file("server.properties").newDataInputStream())
+
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            storeFile file('/home/tic/work/lssw_keys/txtwKey_common.keystore')
+            storePassword 'www.txtws.com'
+            keyAlias 'txtw'
+            keyPassword 'www.txtws.com'
         }
+    }
+
+
+    flavorDimensions "client"
+    productFlavors {
+        Cs {
+            dimension 'client'
+
+            try {
+                signingConfig signingConfigs.release
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
+
+            resValue "string", "server_api_ip", keys.TEST_API_ADDRESS
+            resValue "string", "server_api_port", keys.TEST_API_PORT
+            resValue "string", "server_api_type", keys.API_TYPE
+        }
+
+        Zs {
+            dimension 'client'
+
+            try {
+                signingConfig signingConfigs.release
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
+
+            resValue "string", "server_api_ip", keys.API_ADDRESS
+            resValue "string", "server_api_port", keys.API_PORT
+            resValue "string", "server_api_type", keys.TEST_API_TYPE
+        }
+    }
+
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile project(':fk-things-library')
+    implementation "com.android.support:cardview-v7:$app.supportLibraryVersion"
 }

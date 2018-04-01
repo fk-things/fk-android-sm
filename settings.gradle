@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':fk-things-library'

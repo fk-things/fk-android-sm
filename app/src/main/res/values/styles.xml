@@ -1,11 +1,27 @@
 <resources>
 
+    <color name="colorControlActivated">@android:color/holo_green_light</color>
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="overflowTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/holo_green_light</item>
+    </style>
+
+    <style name="hintTextAppearance" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="errorTextAppearance">
+
     </style>
 
 </resources>

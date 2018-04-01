@@ -1,0 +1,18 @@
+ext.app = [
+        // Sdk and tools
+        compileSdkVersion    : 27,
+        buildToolsVersion    : '27.0.3',
+        minSdkVersion        : 16,
+        targetSdkVersion     : 25,
+
+        // Libs dependencies
+        supportLibraryVersion: '27.1.0',
+        constraintLayout     : '1.0.2',
+        junitVersion         : '4.12',
+        runnerVersion        : '0.5',
+        espressoVersion      : '2.2.2',
+
+        // Version
+        versionCode          : '1',    // 内部版本号
+        versionName          : '1.0.0'   // 外部版本号,
+]

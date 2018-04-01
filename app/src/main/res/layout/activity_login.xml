@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_shape_card"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!--android.support.design:hintAnimationEnabled | 是否显示hint的动画,默认true-->
+        <!--android.support.design:hintEnabled | 是否使用hint属性,默认true-->
+        <!--android.support.design:hintTextAppearance | 设置hint的文字样式(指运行动画效果之后的样式)-->
+        <!--android.support.design:counterEnabled | 是否显示计数器-->
+        <!--android.support.design:counterMaxLength | 设置计数器的最大值-->
+        <!--android.support.design:counterOverflowTextAppearance | 输入字符大于我们限定个数字符时的样式-->
+        <!--app:theme 设置浮动标签的颜色主题-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="11"
+            app:counterOverflowTextAppearance="@style/overflowTextAppearance"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/ic_user"
+                android:drawableStart="@mipmap/ic_user"
+                android:hint="@string/hint_user_name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:paddingLeft="@dimen/edit_padding"
+                android:paddingRight="@dimen/edit_padding"/>
+
+        </android.support.design.widget.TextInputLayout>
+        <!--android.support.design:passwordToggleEnabled | 是否显示密码开关图片,需要EditText设置inputType-->
+        <!--android.support.design:passwordToggleTint | 设置密码开关图片颜色-->
+        <!--android.support.design:passwordToggleTintMode | 设置密码开关图片(混合颜色模式),与passwordToggleTint同时使用-->
+        <!--android.support.design:errorEnabled |是否显示错误信息-->
+        <!--android.support.design:errorTextAppearance| 错误信息的字体样式-->
+
+        <!--系统默认的密码开关(修改颜色主题)-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_password"
+            app:counterEnabled="true"
+            app:counterMaxLength="11"
+            app:counterOverflowTextAppearance="@style/overflowTextAppearance"
+            app:errorEnabled="true"
+            app:errorTextAppearance="@style/errorTextAppearance"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorPrimary"
+            app:passwordToggleTintMode="multiply">
+
+            <EditText
+                android:id="@+id/edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/ic_password"
+                android:drawableStart="@mipmap/ic_password"
+                android:imeOptions="actionNext|flagNoExtractUi"
+                android:paddingLeft="@dimen/edit_padding"
+                android:paddingRight="@dimen/edit_padding"
+                android:inputType="textPassword"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/str_login"/>
+    </LinearLayout>
+</LinearLayout>
