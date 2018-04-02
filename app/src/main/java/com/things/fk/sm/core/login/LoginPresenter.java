@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.things.fk.library.http.RespUtils;
+import com.things.fk.sm.core.data.parser.UserParser;
 import com.things.fk.sm.core.data.source.UserRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,6 +30,7 @@ public class LoginPresenter implements ILoginContract.Presenter {
         this.mViews = Preconditions.checkNotNull(view, "Login View cannot be null");
         this.mRepository = Preconditions.checkNotNull(repository, "repository cannot be null");
         this.mViews.setPresenter(this);
+        this.mCompositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -35,19 +38,33 @@ public class LoginPresenter implements ILoginContract.Presenter {
         mViews.loading();
 
         mCompositeDisposable.clear();
+
         Disposable disposable = mRepository
                 .loginRequest(userName, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> {
-                    Log.e("login", "");
+                    Log.e("login", "login done");
+
                 })
                 .subscribe(
                         // onNext
-                        tasks -> {
+                        data -> {
+                            if (RespUtils.isDataOk(data)) {
+
+                                mViews.loginSuccess();
+                                mViews.dismissLoading();
+                            } else {
+                                mViews.loginFailed((String) data.get(UserParser.KEY_MESSAGE));
+                                mViews.showLoadingError();
+                            }
                         },
                         // onError
-                        throwable -> mViews.showLoadingError());
+                        throwable -> {
+                            throwable.printStackTrace();
+                            mViews.showLoadingError();
+                            mViews.loginFailed(throwable.getMessage());
+                        });
 
         mCompositeDisposable.add(disposable);
     }

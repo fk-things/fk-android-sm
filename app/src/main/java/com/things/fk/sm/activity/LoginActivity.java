@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.things.fk.library.activity.BaseToolbarActivity;
+import com.things.fk.library.database.PrimaryKeys;
 import com.things.fk.sm.R;
 import com.things.fk.sm.core.data.User;
 import com.things.fk.sm.core.data.source.UserRepository;
@@ -59,7 +60,14 @@ public class LoginActivity extends BaseToolbarActivity implements ILoginContract
             case R.id.btn_login:
                 String pwd = mEditPwd.getText().toString();
                 String userName = mEditUserName.getText().toString();
-                new User(userName, pwd);
+
+                getRealm().executeTransaction(realm -> {
+                    User user = getRealm().createObject(User.class,
+                            PrimaryKeys.nextPrimaryKey(getRealm(), User.class));
+                    user.setPassword(pwd);
+                    user.setUserName(userName);
+                });
+                mPresenter.login(userName, pwd);
                 break;
             default:
                 break;
@@ -78,6 +86,21 @@ public class LoginActivity extends BaseToolbarActivity implements ILoginContract
 
     @Override
     public void showLoadingError() {
+
+    }
+
+    @Override
+    public void dismissLoading() {
+
+    }
+
+    @Override
+    public void loginSuccess() {
+        // SharedPreference cache user login state
+    }
+
+    @Override
+    public void loginFailed(String message) {
 
     }
 }

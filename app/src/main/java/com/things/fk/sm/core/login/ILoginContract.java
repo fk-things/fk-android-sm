@@ -20,6 +20,15 @@ public interface ILoginContract {
          * 加载失败
          */
         void showLoadingError();
+
+        /**
+         * 关闭加载
+         */
+        void dismissLoading();
+
+        void loginSuccess();
+
+        void loginFailed(String message);
     }
 
     interface Presenter extends BasePresenter<View> {

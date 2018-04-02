@@ -25,6 +25,11 @@ public class MainActivity extends BaseDrawerActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected int titleRes() {
         return R.string.str_tittle_page_main;
     }

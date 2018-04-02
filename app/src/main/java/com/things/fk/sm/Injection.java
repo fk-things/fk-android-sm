@@ -1,7 +1,7 @@
 package com.things.fk.sm;
 
-import com.things.fk.library.http.DefaultHttpClient;
-import com.things.fk.library.http.RetrofitsClient;
+import com.things.fk.library.http.client.DefaultHttpClient;
+import com.things.fk.library.http.client.RetrofitsClient;
 import com.things.fk.sm.http.Api;
 
 /**

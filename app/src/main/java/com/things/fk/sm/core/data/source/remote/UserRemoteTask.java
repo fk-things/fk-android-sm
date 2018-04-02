@@ -1,9 +1,15 @@
 package com.things.fk.sm.core.data.source.remote;
 
+import com.things.fk.library.http.RespUtils;
 import com.things.fk.library.http.Retrofits;
-import com.things.fk.sm.core.data.service.LoginService;
-import com.things.fk.sm.http.Api;
-import com.things.fk.sm.core.data.User;
+import com.things.fk.library.http.data.HttpResponse;
+import com.things.fk.sm.core.data.parser.UserParser;
+import com.things.fk.sm.core.data.service.UserService;
+
+import java.util.Map;
+
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
 
 /**
  * @author tic
@@ -12,16 +18,25 @@ import com.things.fk.sm.core.data.User;
 
 public class UserRemoteTask {
 
-    private final Retrofits<LoginService> mRetrofit;
+    private final UserService service;
+    private final Retrofits mRetrofit;
 
     public UserRemoteTask() {
-        mRetrofit = new Retrofits<>();
-        mRetrofit.init(Api.BASE_URL_LOCALHOST);
+        mRetrofit = Retrofits.getInstance();
+        service = mRetrofit.createService(UserService.class);
     }
 
-    public void login(User user) {
-        LoginService service = mRetrofit.createService(LoginService.class);
-        service.login(user);
+    public Flowable<Map<String, Object>> login(String userName, String password) {
+        return Flowable.create(e -> {
+            HttpResponse result = mRetrofit.execute(service.login(userName, password));
+            if (RespUtils.isSuccess(result)) {
+                Map<String, Object> data = new UserParser().parse(result.data());
+                e.onNext(data);
+                e.onComplete();
+            } else {
+                e.onError(new Throwable(result.error()));
+            }
+        }, BackpressureStrategy.DROP);
     }
 
 }

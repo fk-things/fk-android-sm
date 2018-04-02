@@ -1,5 +1,7 @@
 package com.things.fk.library.http.converter;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody,
         BufferedSource bufferedSource = Okio.buffer(value.source());
         String tempStr = bufferedSource.readUtf8();
         bufferedSource.close();
+        Log.e("ResponseBodyConverter", tempStr);
         return JSON.parseObject(tempStr, type);
 
     }

@@ -1,4 +1,4 @@
-package com.things.fk.library.http;
+package com.things.fk.library.http.client;
 
 import android.text.TextUtils;
 

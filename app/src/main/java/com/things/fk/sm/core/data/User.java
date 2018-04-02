@@ -108,4 +108,9 @@ public class User extends RealmObject {
     public long getCreateTime() {
         return createTime;
     }
+
+    @Override
+    public String toString() {
+        return _id + " - " + userName + " " + password;
+    }
 }

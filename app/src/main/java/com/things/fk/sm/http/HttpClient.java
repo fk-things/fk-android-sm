@@ -1,6 +1,6 @@
 package com.things.fk.sm.http;
 
-import com.things.fk.library.http.DefaultHttpClient;
+import com.things.fk.library.http.client.DefaultHttpClient;
 
 /**
  *

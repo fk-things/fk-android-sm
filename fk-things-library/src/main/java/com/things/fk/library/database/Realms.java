@@ -16,7 +16,7 @@ public class Realms {
 
     private static final String TAG = Realms.class.getSimpleName();
 
-    public static final String DB_NAME_DEFAULT = "default_gnw";
+    public static final String DB_NAME_DEFAULT = "default_db";
     public static final int DB_VERSION = 1;
 
     private static int sOpenRealmCount;
