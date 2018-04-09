@@ -1,5 +1,6 @@
 package com.things.fk.library.http.client;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Converter;
 
@@ -12,14 +13,39 @@ import retrofit2.Converter;
  */
 
 public interface RetrofitsClient {
+
     /**
+     * provider base url for http
      *
-     * @return
+     * @return url
      */
     String baseUrl();
 
+    /**
+     * provide the okhttpclient
+     *
+     * @return okhttpclient
+     */
     OkHttpClient client();
 
+    /**
+     * data converter factory
+     *
+     * @return Converter.Factory
+     */
     Converter.Factory dataConverter();
 
+    /**
+     * retry time when connection failed
+     *
+     * @return times
+     */
+    int retryTimes();
+
+    /**
+     * cache strategy. disable when null
+     *
+     * @return Cache
+     */
+    Cache cacheStrategy();
 }

@@ -45,7 +45,6 @@ public class LoginPresenter implements ILoginContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> {
                     Log.e("login", "login done");
-
                 })
                 .subscribe(
                         // onNext

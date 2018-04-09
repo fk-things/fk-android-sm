@@ -2,7 +2,10 @@ package com.things.fk.sm.core.data.source.local;
 
 import android.util.Log;
 
+import com.google.common.base.Preconditions;
+import com.things.fk.library.database.Executor;
 import com.things.fk.library.database.PrimaryKeys;
+import com.things.fk.library.database.Realms;
 import com.things.fk.sm.core.data.User;
 
 import io.realm.Realm;
@@ -21,12 +24,24 @@ public class UserLocalTask {
         this.mRealm = realm;
     }
 
-    public void insertOrReplace(User user) {
-        mRealm.executeTransaction(realm -> {
-            user.setId(PrimaryKeys
-                    .nextPrimaryKey(realm, User.class));
+    public Realm getRealm() {
+        return mRealm;
+    }
 
-            realm.copyToRealmOrUpdate(user);
+    /**
+     * 插入或者更新
+     *
+     * @param user
+     */
+    public void insertOrReplace(User user) {
+        Preconditions.checkNotNull(mRealm);
+
+        Realms.execute(mRealm, new Executor() {
+            @Override
+            protected void run(Realm realm) {
+                user.setId(PrimaryKeys.nextPrimaryKey(realm, User.class));
+                realm.copyToRealmOrUpdate(user);
+            }
         });
     }
 
@@ -35,6 +50,7 @@ public class UserLocalTask {
     }
 
     public void logAll() {
+        Preconditions.checkNotNull(mRealm);
         RealmResults<User> data = mRealm.where(User.class).findAll();
         if (data == null) {
             return;
@@ -45,19 +61,16 @@ public class UserLocalTask {
     }
 
     public User create(String userName, String password) {
-        try {
-            mRealm.beginTransaction();
-            User user = mRealm.createObject(User.class, PrimaryKeys.nextPrimaryKey(mRealm, User.class));
-            user.setUserName(userName);
-            user.setPassword(password);
-            return user;
-        } catch (Exception e) {
-            e.printStackTrace();
-            mRealm.cancelTransaction();
-        } finally {
-            mRealm.commitTransaction();
-        }
+        Preconditions.checkNotNull(mRealm);
 
-        return null;
+        return Realms.executeForResult(mRealm, new Executor<User>() {
+            @Override
+            protected User runForResult(Realm realm) {
+                User user = realm.createObject(User.class, PrimaryKeys.nextPrimaryKey(mRealm, User.class));
+                user.setUserName(userName);
+                user.setPassword(password);
+                return user;
+            }
+        });
     }
 }

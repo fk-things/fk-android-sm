@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import com.google.common.base.Preconditions;
 import com.things.fk.library.BuildConfig;
 import com.things.fk.library.http.converter.FastJsonConverterFactory;
+import com.things.fk.library.http.interceptor.RetryInterceptor;
 import com.things.fk.library.utils.Files;
+import com.things.fk.library.utils.Utilities;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -41,34 +43,22 @@ public class DefaultHttpClient implements RetrofitsClient {
         if (BuildConfig.DEBUG) {
             okHttp.addNetworkInterceptor(loggingInterceptor());
         }
+
         // timeout
         okHttp.connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true);
-        // cache control
-        // okHttp.cache(createCache(cacheDir()));
+
+        Cache strategy = cacheStrategy();
+        if (Utilities.isNotNull(strategy)) {
+            // cache control
+            okHttp.cache(strategy);
+        }
+        // retry
+        okHttp.addInterceptor(new RetryInterceptor(retryTimes()));
 
         return okHttp.build();
-    }
-
-    /**
-     * cache dir for overriding
-     *
-     * @return
-     */
-    protected String cacheDir() {
-        String sdcard = Files.sdcardDir();
-        if (!TextUtils.isEmpty(sdcard)) {
-            return sdcard + File.separator + BuildConfig.APPLICATION_ID;
-        }
-        return null;
-    }
-
-    public Cache createCache(String dir) {
-        File cacheFile = new File(dir, "cache");
-        int cacheSize = 10 * 1024 * 1024;
-        return new Cache(cacheFile, cacheSize);
     }
 
     /**
@@ -108,4 +98,26 @@ public class DefaultHttpClient implements RetrofitsClient {
     public Converter.Factory dataConverter() {
         return FastJsonConverterFactory.create();
     }
+
+    @Override
+    public int retryTimes() {
+        return 3;
+    }
+
+    @Override
+    public Cache cacheStrategy() {
+//        File cacheFile = new File(cacheDir(), "cache");
+//        int cacheSize = 10 * 1024 * 1024;
+//        return new Cache(cacheFile, cacheSize);
+        return null;
+    }
+
+    private String cacheDir() {
+        String sdcard = Files.sdcardDir();
+        if (!TextUtils.isEmpty(sdcard)) {
+            return sdcard + File.separator + BuildConfig.APPLICATION_ID;
+        }
+        throw new IllegalStateException("sdcard not ready");
+    }
+
 }

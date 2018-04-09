@@ -29,6 +29,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.PowerManager;
+import android.os.StrictMode;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TtsSpan;
@@ -333,10 +334,31 @@ public final class Utilities {
         return true;
     }
 
-
+    /**
+     * enable strict mode
+     */
     public static void strictMode() {
-
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()   // or .detectAll() for all detectable problems
+                .penaltyLog()
+                .build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build());
     }
 
-
+    /**
+     * is null object
+     *
+     * @param object object
+     * @return true when not null
+     */
+    public static boolean isNotNull(Object object) {
+        return object != null;
+    }
 }

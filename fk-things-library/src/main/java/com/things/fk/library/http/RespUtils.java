@@ -11,7 +11,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /**
- * Response 工具类
+ * Response utils
  *
  * @author tic
  *         created on 18-4-2
@@ -23,16 +23,45 @@ public class RespUtils {
         return create(code, response.message(), response.body().toString());
     }
 
-    static HttpResponse failed(int code, String message) {
+    /**
+     * handle response failed
+     *
+     * @param resp okhttp Response
+     * @return HttpResponse
+     * @throws IOException
+     */
+    static HttpResponse failed(Response<?> resp) throws IOException {
+        HttpResponse httpResp = null;
+        switch (resp.code()) {
+            case 503:
+                // cache失败,retry
+                httpResp = exception(resp.code(), "retry again!");
+                break;
+            default:
+                httpResp = exception(resp.code(), resp.errorBody());
+                break;
+        }
+
+        return httpResp;
+    }
+
+    /**
+     * wrap Respons exception
+     *
+     * @param code
+     * @param message
+     * @return HttpResponse
+     */
+    static HttpResponse exception(int code, String message) {
         return create(code, message, null);
     }
 
-    static HttpResponse failed(int code, ResponseBody body) throws IOException {
+    static HttpResponse exception(int code, ResponseBody body) throws IOException {
         return create(code, "bad connection", new String(body.bytes()));
     }
 
     /**
-     * response是否成功
+     * response is correct
      *
      * @param response
      * @return
@@ -42,7 +71,7 @@ public class RespUtils {
     }
 
     /**
-     * 数据格式是否是正常的
+     * data format is correct
      *
      * @param data
      * @return

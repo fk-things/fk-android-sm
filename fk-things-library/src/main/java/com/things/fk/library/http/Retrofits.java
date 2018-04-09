@@ -63,6 +63,7 @@ public class Retrofits {
     }
 
     private static Retrofit.Builder createBuilder(RetrofitsClient provider) {
+        Preconditions.checkNotNull(provider, "provider cannot be null");
         Preconditions.checkNotNull(provider.client(), "provider should provide a OkHttpClient");
         Preconditions.checkNotNull(provider.baseUrl(), "provider should provide a base url");
         Preconditions.checkNotNull(provider.dataConverter(), "provider should provide a data converter");
@@ -82,7 +83,7 @@ public class Retrofits {
      * @return
      */
     public <T> T createService(final Class<T> service) {
-        Preconditions.checkNotNull(retrofit, "Retrofits init failed");
+        Preconditions.checkNotNull(retrofit, "Retrofits init exception");
         return retrofit.create(service);
     }
 
@@ -95,29 +96,18 @@ public class Retrofits {
         HttpResponse httpResp = null;
         try {
             Response<?> resp = caller.execute();
-            if (resp.isSuccessful()) {
-                httpResp = RespUtils.success(0, resp);
-            } else {
-                switch (resp.code()) {
-                    case 503:
-                        // cache失败,retry
-
-                        break;
-                    default:
-                        httpResp = RespUtils.failed(resp.code(), resp.errorBody());
-                        break;
-                }
-            }
+            httpResp = resp.isSuccessful() ? RespUtils.success(0, resp)
+                    : RespUtils.failed(resp);
         } catch (ConnectException e) {
-            httpResp = RespUtils.failed(404,
+            httpResp = RespUtils.exception(404,
                     "Failed to connect to " + caller.request().url());
             e.printStackTrace();
         } catch (IOException e) {
-            httpResp = RespUtils.failed(404, e.getLocalizedMessage());
+            httpResp = RespUtils.exception(404, e.getLocalizedMessage());
             e.printStackTrace();
         } finally {
             if (httpResp == null) {
-                httpResp = RespUtils.failed(404, "unknown exception");
+                httpResp = RespUtils.exception(404, "unknown exception");
             }
         }
         return httpResp;

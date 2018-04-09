@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.common.base.Preconditions;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -68,6 +70,49 @@ public class Realms {
         if (realm != null && !realm.isClosed()) {
             realm.close();
             reduceOpenRealmCount();
+        }
+    }
+
+    /**
+     * wrap realm transaction, auto rollback transaction when catch exception
+     *
+     * @param realm
+     * @param executor
+     */
+    public static <T> T executeForResult(Realm realm, Executor<T> executor) {
+        try {
+            Preconditions.checkNotNull(executor,
+                    "executor callback cannot be null");
+
+            realm.beginTransaction();
+            return executor.runForResult(realm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            realm.cancelTransaction();
+        } finally {
+            realm.commitTransaction();
+        }
+        return null;
+    }
+
+    /**
+     * wrap realm transaction, auto rollback transaction when catch exception
+     *
+     * @param realm
+     * @param executor
+     */
+    public static void execute(Realm realm, Executor executor) {
+        try {
+            Preconditions.checkNotNull(executor,
+                    "executor callback cannot be null");
+
+            realm.beginTransaction();
+            executor.run(realm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            realm.cancelTransaction();
+        } finally {
+            realm.commitTransaction();
         }
     }
 

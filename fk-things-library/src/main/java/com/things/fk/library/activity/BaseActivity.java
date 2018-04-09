@@ -11,6 +11,7 @@ import android.view.View;
 import com.google.common.base.Preconditions;
 import com.things.fk.library.R;
 import com.things.fk.library.database.Realms;
+import com.things.fk.library.utils.Utilities;
 
 import io.realm.Realm;
 
@@ -29,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.i(TAG, TAG + "onCreate");
 
+        Utilities.strictMode();
     }
 
     public Realm getRealm() {
