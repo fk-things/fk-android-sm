@@ -28,7 +28,7 @@ public class UserRepository {
     }
 
     public Flowable<Map<String, Object>> loginRequest(String userName, String password) {
-        return mRemoteTask.login(userName, password)
+        return mRemoteTask.userToken(userName, password)
                 .doOnNext(data -> {
                     if (RespUtils.isDataOk(data)) {
                         User user = mLocalTask.create(userName, password);

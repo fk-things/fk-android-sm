@@ -57,25 +57,46 @@ public final class Utilities {
     private static final Pattern S_TRIM_PATTERN =
             Pattern.compile("^[\\s|\\p{javaSpaceChar}]*(.*)[\\s|\\p{javaSpaceChar}]*$");
 
-    public static final boolean ATLEAST_N = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
-
+    /**
+     * > 8.0
+     */
+    public static final boolean ATLEAST_N =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    /**
+     * > 7.0
+     */
     public static final boolean ATLEAST_MARSHMALLOW =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-
+    /**
+     * > 6.0
+     */
     public static final boolean ATLEAST_LOLLIPOP_MR1 =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1;
-
+    /**
+     * > 5.1
+     */
     public static final boolean ATLEAST_LOLLIPOP =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-
+    /**
+     * > 4.4
+     */
     public static final boolean ATLEAST_KITKAT =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
+    /**
+     * > 4.3.x
+     */
     public static final boolean ATLEAST_JB_MR2 =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
-
+    /**
+     * > 4.2.x
+     */
     public static final boolean ATLEAST_JB_MR1 =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    /**
+     * > 4.0
+     */
+    public static final boolean ATLEAST_JB =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     /***
      * global context
      */

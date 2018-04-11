@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.things.fk.library.utils.Utilities;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -67,7 +68,7 @@ public class Realms {
      * @param realm realm to closed
      */
     public static void close(Realm realm) {
-        if (realm != null && !realm.isClosed()) {
+        if (Utilities.isNotNull(realm) && !realm.isClosed()) {
             realm.close();
             reduceOpenRealmCount();
         }

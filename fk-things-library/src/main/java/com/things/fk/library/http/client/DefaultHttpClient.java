@@ -38,7 +38,7 @@ public class DefaultHttpClient implements RetrofitsClient {
      *
      * @return OkHttpClient
      */
-    private OkHttpClient init() {
+    protected OkHttpClient init() {
         OkHttpClient.Builder okHttp = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             okHttp.addNetworkInterceptor(loggingInterceptor());

@@ -57,4 +57,7 @@ dependencies {
     // downloader
     compile 'com.liulishuo.filedownloader:library:1.6.9'
     compile 'com.google.guava:guava:24.1-android'
+
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
 }

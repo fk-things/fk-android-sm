@@ -24,18 +24,17 @@ public class RSACoder extends Coder {
     public static final String KEY_ALGORITHM = "RSA";
     public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
 
-    private static final String PUBLIC_KEY = "RSAPublicKey";
-    private static final String PRIVATE_KEY = "RSAPrivateKey";
+    private static final String KEY_RSA_PUBLIC_KEY = "RSAPublicKey";
+    private static final String KEY_RSA_PRIVATE_KEY = "RSAPrivateKey";
     private static final String row = "\n";
     /**
      * RSA 公钥
      */
-    private static final String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbA9Qt9LlBDHEfazO/WuGJYaht" + row +
+    private static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbA9Qt9LlBDHEfazO/WuGJYaht" + row +
             "uOJihMmLcBlJwW22EJaIQUt3ZLkiKEdp+gB5nFgBqCBqaXO3ppbyeGZ/xFEVTwPy" + row +
             "gR5eD71gfmT0xLuOrogxLO/gPdF8C/Y8KZL3gUXM2VMscENIYicFcHD9kZ2Uddu/" + row +
             "tM+xgScMb2vUkMH/ZwIDAQAB";
 
-    /** */
     /**
      * 用私钥对信息生成数字签名
      *
@@ -143,7 +142,7 @@ public class RSACoder extends Coder {
      */
     public static byte[] encryptByPublicKey(byte[] data) throws Exception {
         // 对公钥解密
-        byte[] keyBytes = decryptBASE64(publicKey);
+        byte[] keyBytes = decryptBASE64(PUBLIC_KEY);
 
         // 取得公钥
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
@@ -185,7 +184,7 @@ public class RSACoder extends Coder {
      * 取得私钥
      */
     public static String getPrivateKey(Map<String, Object> keyMap) throws Exception {
-        Key key = (Key) keyMap.get(PRIVATE_KEY);
+        Key key = (Key) keyMap.get(KEY_RSA_PRIVATE_KEY);
 
         return encryptBASE64(key.getEncoded());
     }
@@ -195,7 +194,7 @@ public class RSACoder extends Coder {
      * 取得公钥
      */
     public static String getPublicKey(Map<String, Object> keyMap) throws Exception {
-        Key key = (Key) keyMap.get(PUBLIC_KEY);
+        Key key = (Key) keyMap.get(KEY_RSA_PUBLIC_KEY);
 
         return encryptBASE64(key.getEncoded());
     }
@@ -218,8 +217,8 @@ public class RSACoder extends Coder {
 
         Map<String, Object> keyMap = new HashMap<String, Object>(2);
 
-        keyMap.put(PUBLIC_KEY, publicKey);
-        keyMap.put(PRIVATE_KEY, privateKey);
+        keyMap.put(KEY_RSA_PUBLIC_KEY, publicKey);
+        keyMap.put(KEY_RSA_PRIVATE_KEY, privateKey);
         return keyMap;
     }
 

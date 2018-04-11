@@ -1,7 +1,5 @@
 package com.things.fk.library.http.converter;
 
-import android.util.Log;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
@@ -28,7 +26,6 @@ public class FastJsonConverterFactory extends Converter.Factory {
      */
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-        Log.e(TAG, "responseBodyConverter:" + type.getClass().getSimpleName());
         return new FastJsonResponseBodyConverter<>(type);
     }
 
@@ -37,7 +34,6 @@ public class FastJsonConverterFactory extends Converter.Factory {
      */
     @Override
     public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
-        Log.e(TAG, "requestBodyConverter:" + type.getClass().getSimpleName());
         return new FastJsonRequestBodyConverter<>(type);
     }
 

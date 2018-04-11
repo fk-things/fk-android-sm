@@ -12,7 +12,7 @@ public interface ILoginContract {
 
     interface View extends BaseView<Presenter> {
         /**
-         * show loading view when in busy
+         * show dialog_loading view when in busy
          */
         void loading();
 
